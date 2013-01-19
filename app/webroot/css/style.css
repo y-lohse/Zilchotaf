@@ -1,0 +1,358 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* //////////////////////////// DEBUT /////////////////////////////////// */
+
+#content{
+  width:700px;
+  height:380px;
+  padding:50px;
+  background-color:#f2f2f2;
+  font-family: Arial;
+}
+
+header{
+  margin-bottom:36px;
+}
+
+header img{
+  display:block;
+  margin:0 auto;
+}
+
+#entrees{
+  display:inline-block;
+  width:305px;
+  margin-right: 102px;
+  vertical-align: top;
+}
+
+#les_bt{
+  display:inline-block;
+  width:257px;
+}
+
+#les_bt input,
+#col1 > div > input{
+  display:block;
+  border: 1px solid rgb(231,231,231);
+  background-color:#0c5da5;
+  background-image: -moz-linear-gradient(top, rgba(255,255,255,0.24), rgba(0,0,0,0.24));
+  background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0.24)), to(rgba(0,0,0,0.24)));
+  box-shadow: 2px 4px 13px 6px rgba(0,0,0,0.16);
+  -moz-box-shadow: 2px 4px 13px 6px rgba(0,0,0,0.16);
+  -webkit-box-shadow: 2px 4px 13px 6px rgba(0,0,0,0.16);
+  border-radius:10px;
+  height:90px;
+  width:250px;
+  margin-bottom:15px;
+  cursor:pointer;
+  font-family:"Arial Black", arial;
+  font-size:27px;
+  color:#fff;
+  letter-spacing:-1px;
+  text-transform:uppercase;
+}
+
+input{
+  height:51px;
+  width:266px;
+  border-radius:10px;
+  border:none;
+  box-shadow: inset 3px 3px 6px 0 rgba(0,0,0,0.16);
+  -moz-box-shadow: inset 3px 3px 6px 0 rgba(0,0,0,0.16);
+  -webkit-box-shadow: inset 3px 3px 6px 0 rgba(0,0,0,0.16);
+  padding:0 20px;
+  margin-bottom:37px;  
+  font-family:"Arial Black", arial;
+  font-size:14px;
+  text-transform:uppercase;
+}
+
+input:focus{
+  box-shadow: inset 3px 3px 6px 0 rgba(31,88,139,0.46);
+  -moz-box-shadow: inset 3px 3px 6px 0 rgba(31,88,139,0.46);
+  -webkit-box-shadow: inset 3px 3px 6px 0 rgba(31,88,139,0.46);
+}
+
+#entrees label{
+  display:block;
+  font-family:"Arial Black", arial;
+  font-size:16px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+  letter-spacing:-1px;
+}
+
+
+
+/*   Partie jeu */
+#col1{
+	width:225px;
+	display:inline-block;
+	vertical-align: top;
+}
+
+#col1 > img{
+	margin-bottom: 40px;
+}
+
+#col1 > div > input{
+	height:71px;
+	font-size: 23px;
+}
+
+#col1 > div{
+	position: relative;
+}
+
+#col1 > div input:first-child{
+	background-color:#242424;
+  	color:#fff;
+}
+
+#col1 > div input + span{
+	position: absolute;
+}
+
+#bankable{
+	background-color:#ff9500;
+ 	background-image: -moz-linear-gradient(top, rgba(255,255,255,0.24), rgba(0,0,0,0.24));
+ 	background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0.24)), to(rgba(0,0,0,0.24)));
+ 	padding:7px 15px;
+ 	font-weight: bold;
+ 	font-size: 25px;
+ 	bottom:-11px;
+ 	left:-11px;
+ 	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+ 	-moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+ 	-webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+ 	-moz-transform: rotate(-4deg);
+ 	-webkit-transform: rotate(-4deg); 	
+}
+
+#freeroll{
+	background-color:#ff9500;
+ 	background-image: -moz-linear-gradient(top, rgba(255,255,255,0.24), rgba(0,0,0,0.24));
+ 	background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0.24)), to(rgba(0,0,0,0.24)));
+ 	padding:7px 15px;
+ 	font-weight: bold;
+ 	font-size: 25px;
+ 	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+ 	-moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+ 	-webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+ 	-moz-transform: rotate(4deg);
+ 	-webkit-transform: rotate(4deg); 
+ 	right:-39px;
+ 	top:-11px;
+	display: none;
+}
+
+#col2{
+    display: inline-block;
+    margin-left: 50px;
+    vertical-align: top;
+    width: 420px;
+}
+
+#joueurs > div{
+	width:204px;
+	display: inline-block;
+	border-radius: 7px;
+	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+	-moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+	-webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+	padding-bottom: 10px;
+}
+
+#joueurs > div + div{
+	margin-left: 7px;
+}
+
+#joueurs > div > *{
+	padding:0 10px;
+}
+
+#joueurs > div > h2{
+	background-color:#242424;
+  	background-image: -moz-linear-gradient(top, rgba(255,255,255,0.24), rgba(0,0,0,0.24));
+  	background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0.24)), to(rgba(0,0,0,0.24)));
+  	color:#fff;
+  	border-radius:7px 7px 0 0;
+  	padding:6px 10px;
+  	font-family: "Arial Black";
+  	text-transform: uppercase;
+}
+
+#joueurs > div.atontour{
+	box-shadow: 0 1px 7px rgba(12, 93, 165, 0.37);
+	-moz-box-shadow: 0 1px 7px rgba(12, 93, 165, 0.37);
+	-webkit-box-shadow: 0 1px 7px rgba(12, 93, 165, 0.37);
+}
+
+#joueurs > div.atontour > h2{
+	background-color:#0c5da5;
+}
+
+#joueurs > div > h3{
+	font-size: 15px;
+	font-weight: bold;
+	margin: 10px 0 5px;
+}
+
+#joueurs > div > h3 + p{
+	font-family: "Arial Black";
+	font-size: 25px;
+}
+
+#joueurs > div li{
+	display: inline-block;
+	background-color: #e8e8e8;
+	border-radius: 7px;
+	padding:5px;
+	border:1px solid #dbdbdb;
+	min-width: 40px;
+	text-align: center;
+	font-weight: bold;
+	color:#767676;
+}
+
+#possibilites{
+	margin-top: 30px;
+}
+
+#possibilites li{
+    border-radius: 7px 7px 7px 7px;
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
+    display: inline-block;
+    margin-right: 4px;
+    padding:10px;
+    width: 114px;
+    text-align: center;
+    font-size: 18px;
+}
+
+#possibilites li p + p{
+	font-weight: bold;
+	margin-top: 5px;
+	font-size: 20px;
+}
+
+#possibilites li:last-child{
+	margin-right:0;
+}
+
+.lock{
+	box-shadow: 0px 0px 10px rgba(12,93,165,0.7), inset 0 0 10px rgba(0,0,0,0.06) !important;
+	-moz-box-shadow: 0px 0px 10px rgba(12,93,165,0.7), inset 0 0 10px rgba(0,0,0,0.06) !important;
+	-webkit-box-shadow: 0px 0px 10px rgba(12,93,165,0.7), inset 0 0 10px rgba(0,0,0,0.06) !important;
+}
+
+#dices{
+	margin-top: 20px;
+}
+
+
+#dices li{
+	display: inline-block;
+	width:90px;
+	height:90px;
+	background-color: #fff;
+	border-radius:7px;
+	border:1px solid #e7e7e7;
+	box-shadow: 3px 4px 5px rgba(0,0,0,0.13), inset 0 0 10px rgba(0,0,0,0.06);
+	-moz-box-shadow: 3px 4px 5px rgba(0,0,0,0.13), inset 0 0 10px rgba(0,0,0,0.06);
+	-webkit-box-shadow: 3px 4px 5px rgba(0,0,0,0.13), inset 0 0 10px rgba(0,0,0,0.06);
+	overflow: hidden;
+	text-indent: -9999px;
+	margin-right: 25px;
+}
+
+#dices li:last-child{
+	margin-right: 0;
+}
+
+#dices .un{
+	background-image: url('../img/un.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('../img/un.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+}
+
+#dices .deux{
+	background-image: url('../img/deux.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('../img/deux.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+}
+
+#dices .trois{
+	background-image: url('../img/trois.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('../img/trois.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+}
+
+#dices .quatre{
+	background-image: url('../img/quatre.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('../img/quatre.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+}
+
+#dices .cinq{
+	background-image: url('../img/cinq.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('../img/cinq.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+}
+
+#dices .six{
+	background-image: url('../img/six.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('../img/six.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+}
+
+#dices .used{
+	background-color: #d6d6d6;
+}
+
+#dices .des_roll{
+}

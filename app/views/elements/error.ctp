@@ -1,0 +1,1 @@
+<div id="error"><?php echo $message; ?> </div>
