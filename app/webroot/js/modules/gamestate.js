@@ -147,7 +147,7 @@ Zilchotaf.OutputManager = {
             $(this.possibilites[i]).data('lock', combinations[i].lock).find('p:first').html(combinations[i].name).end().find('p:last').html(combinations[i].score);
         }
         
-        this.possibilites.show().slice(combinations.length).hide();
+        if (data.bankable > -1) this.possibilites.show().slice(combinations.length).hide();
     },
     turnChange: function(turn){
         this.joueurs.removeClass('atontour');

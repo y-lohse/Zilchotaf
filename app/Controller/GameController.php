@@ -113,27 +113,6 @@ class GameController extends AppController {
 		$this->responseJSON(false, $data);
 	}
 	
-	private function isPlayersTurn($players, $game){
-		$playerOrder = 0;
-		$player = $this->Session->read('player');
-		if ($players[0]['Player']['player_id'] == $player['id']) $playerOrder = 1;
-		else $playerOrder = 2;
-		
-		$state = (($game['game_state'] == ZILCH_TURN_PLAYER_1 && $playerOrder === 1) || ($game['game_state'] == ZILCH_TURN_PLAYER_2 && $playerOrder === 2)) ? true : false;
-		
-		return $state;
-	}
-	
-	private function createZilch($game){
-		$dices = array();
-		for ($i = 1; $i < 7; $i++){
-			$dice = new Dice($game['game_dice'.$i], $game['game_dice'.$i.'_lock']);
-			array_push($dices, $dice);
-		}
-		
-		return new Zilch($dices);
-	}
-	
 	public function roll(){		
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
@@ -303,6 +282,27 @@ class GameController extends AppController {
 		else {
 			$this->responseJSON(true);
 		}
+	}
+	
+	private function isPlayersTurn($players, $game){
+		$playerOrder = 0;
+		$player = $this->Session->read('player');
+		if ($players[0]['Player']['player_id'] == $player['id']) $playerOrder = 1;
+		else $playerOrder = 2;
+	
+		$state = (($game['game_state'] == ZILCH_TURN_PLAYER_1 && $playerOrder === 1) || ($game['game_state'] == ZILCH_TURN_PLAYER_2 && $playerOrder === 2)) ? true : false;
+	
+		return $state;
+	}
+	
+	private function createZilch($game){
+		$dices = array();
+		for ($i = 1; $i < 7; $i++){
+			$dice = new Dice($game['game_dice'.$i], $game['game_dice'.$i.'_lock']);
+			array_push($dices, $dice);
+		}
+	
+		return new Zilch($dices);
 	}
 	
 	private function endTurn($state){

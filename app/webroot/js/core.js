@@ -22,7 +22,7 @@ var Zilchotaf = {
     },
     tryAction: function(action, data, callback){
         if (this.actions[action]){
-            $.getJSON(this.actions[action], data)
+            $.getJSON(this.actions[action]+'.json', data)
             .success(function(response){
                 callback(true, response);
             }).error(function(){
@@ -59,7 +59,7 @@ var Zilchotaf = {
         if (state != this.__gameState){
             this.__gameState = state;
             Zilchotaf.OutputManager.turnChange(state);
-            if (myturn) Zilchotaf.InputManager.propositions.hide();
+            Zilchotaf.InputManager.propositions.hide();
         }
     }
 };
