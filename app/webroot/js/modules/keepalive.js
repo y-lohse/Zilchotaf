@@ -2,7 +2,7 @@
 Zilchotaf.KeepAlive = {
     KEEPALIVE_RYTHM: 2000,
     getStatus: function(){
-        Zilchotaf.retrieve('gamestatus', function(ok, status){
+        Zilchotaf.retrieve('keepalive', function(ok, status){
             if (ok){
                 if (status.status === true){
                     Zilchotaf.setGameStatus(true);

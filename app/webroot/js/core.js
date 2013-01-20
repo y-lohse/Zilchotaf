@@ -2,8 +2,7 @@ var APP_PREFIX = '';
 
 var Zilchotaf = {
     bankable: null,
-    actions: {  'gamestatus': APP_PREFIX+'/game/status',
-                'keepalive': APP_PREFIX+'/game/keepalive',
+    actions: {  'keepalive': APP_PREFIX+'/game/keepalive',
                 'gamestate': APP_PREFIX+'/game/gamestate',
                 'roll': APP_PREFIX+'/game/roll',
                 'bank': APP_PREFIX+'/game/bank'},

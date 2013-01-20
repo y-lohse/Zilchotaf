@@ -67,21 +67,6 @@ class GameController extends AppController {
 		return $status;
 	}
 	
-	public function status(){
-		//on remet a jout le timestamp, ca résoud un bug pour le 2eme qui rejoins, j'ai pas trop compris pourquoi
-		$player = $this->Session->read('player');
-		$this->Player->id = $player['id'];
-		$this->Player->set('player_keepalive', time());
-		$this->Player->save();
-		
-		$gameId = $this->Session->read('game_id');
-		$status = $this->getGameStatus($gameId);
-		
-		$data = array('status'=>$status);
-		$this->set('data', $data);
-		//$this->responseJSON(false, $data);
-	}
-	
 	public function keepalive(){		
 		//déja on se met a jour
 		$player = $this->Session->read('player');
@@ -93,7 +78,7 @@ class GameController extends AppController {
 		$status = $this->getGameStatus($gameId);
 		
 		$data = array('status'=>$status);
-		$this->responseJSON(false, $data);
+		$this->set('data', $data);
 	}
 	
 	public function gamestate(){
