@@ -21,7 +21,7 @@ Zilchotaf.InputManager = {
         this.rollButton = $('#roll');
         this.bankButton = $('#bank');
         this.propositions = $('#possibilites li');
-        this.dices = $('#dices li');
+        this.dices = $('#des li');
         
         this.rollButton.click(this.roll);
         this.bankButton.click(this.bank);
@@ -46,8 +46,8 @@ Zilchotaf.InputManager = {
                 alert('action interdite');
             }
             else {
-                $('#dices li.lock').removeClass('lock');
-                $('#dices li.used').removeClass('used');
+                $('#des li.lock').removeClass('lock');
+                $('#des li.used').removeClass('used');
                 $('#freeroll').hide();
                 Zilchotaf.GameManager.getGameState();
             }
@@ -70,7 +70,7 @@ Zilchotaf.InputManager = {
         $('#freeroll').hide();
         
         var values = [];
-        $('#dices li.lock').each(function(){
+        $('#des li.lock').each(function(){
             values.push(this.innerHTML);
         });
         
@@ -86,7 +86,7 @@ Zilchotaf.InputManager = {
             Zilchotaf.InputManager.disableRoll(false);
             Zilchotaf.InputManager.disableBank(false);
             
-            if ($('#dices').find('li.used').length+values.length === 6) $('#freeroll').show();
+            if ($('#des').find('li.used').length+values.length === 6) $('#freeroll').show();
         }
     },
     disableRoll: function(disable){
@@ -119,7 +119,7 @@ Zilchotaf.OutputManager = {
         this.p1score = $('#score1');
         this.p2score = $('#score2');
         this.joueurs = $('#joueurs > div');
-        this.dices = $('#dices li');
+        this.dices = $('#des li');
         this.possibilites = $('#possibilites li');
     },
     update: function(data){
@@ -140,7 +140,7 @@ Zilchotaf.OutputManager = {
         }
         
         var values = [];
-        $('#dices li').not('.used').each(function(){
+        $('#des li').not('.used').each(function(){
             values.push(this.innerHTML);
         });
         var combinations = Zilchotaf.Zilch.getAllCombinations(values);
@@ -153,7 +153,7 @@ Zilchotaf.OutputManager = {
     turnChange: function(turn){
         this.joueurs.removeClass('atontour');
         (turn === 1) ? this.joueurs.first().addClass('atontour') : this.joueurs.last().addClass('atontour');
-        $('#dices li').removeClass('used lock');
+        $('#des li').removeClass('used lock');
         Zilchotaf.InputManager.disableBank(true);
     },
     bankablePreview: function(preview){

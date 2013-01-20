@@ -47,13 +47,30 @@ table {
 	border-spacing: 0;
 }
 
+/* //////////////////////////// GENERAL /////////////////////////////////// */
+
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body{
+	font-size: 62.5%;
+	background-color:#f2f2f2;
+}
+
+img{
+	max-width: 100%;
+	width:auto;
+	height:auto;
+}
+
 /* //////////////////////////// DEBUT /////////////////////////////////// */
 
 #content{
-  width:700px;
-  height:380px;
-  padding:50px;
-  background-color:#f2f2f2;
+  width:100%; /*700px;*/
+  padding:5%;
   font-family: Arial;
 }
 
@@ -64,18 +81,21 @@ header{
 header img{
   display:block;
   margin:0 auto;
+  max-width: 95%;
+  width: auto;
+  height:auto;
 }
 
 #entrees{
   display:inline-block;
-  width:305px;
-  margin-right: 102px;
+  width:45%;
   vertical-align: top;
+  margin-right:5%;
 }
 
 #les_bt{
   display:inline-block;
-  width:257px;
+  width:45%;
 }
 
 #les_bt input,
@@ -89,29 +109,28 @@ header img{
   -moz-box-shadow: 2px 4px 13px 6px rgba(0,0,0,0.16);
   -webkit-box-shadow: 2px 4px 13px 6px rgba(0,0,0,0.16);
   border-radius:10px;
-  height:90px;
-  width:250px;
+  width:100%;
   margin-bottom:15px;
   cursor:pointer;
   font-family:"Arial Black", arial;
-  font-size:27px;
+  font-size:1.4rem;
   color:#fff;
   letter-spacing:-1px;
   text-transform:uppercase;
+  padding:3.5%;
 }
 
 input{
-  height:51px;
-  width:266px;
+  width:100%;
   border-radius:10px;
   border:none;
   box-shadow: inset 3px 3px 6px 0 rgba(0,0,0,0.16);
   -moz-box-shadow: inset 3px 3px 6px 0 rgba(0,0,0,0.16);
   -webkit-box-shadow: inset 3px 3px 6px 0 rgba(0,0,0,0.16);
-  padding:0 20px;
-  margin-bottom:37px;  
+  padding:3.5%;
+  margin-bottom:4%;  
   font-family:"Arial Black", arial;
-  font-size:14px;
+  font-size:1.3rem;
   text-transform:uppercase;
 }
 
@@ -124,7 +143,7 @@ input:focus{
 #entrees label{
   display:block;
   font-family:"Arial Black", arial;
-  font-size:16px;
+  font-size:1.15rem;
   text-transform:uppercase;
   margin-bottom:6px;
   letter-spacing:-1px;
@@ -134,7 +153,7 @@ input:focus{
 
 /*   Partie jeu */
 #col1{
-	width:225px;
+	width:30%;
 	display:inline-block;
 	vertical-align: top;
 }
@@ -145,7 +164,7 @@ input:focus{
 
 #col1 > div > input{
 	height:71px;
-	font-size: 23px;
+	font-size: 2.3rem;
 }
 
 #col1 > div{
@@ -190,19 +209,18 @@ input:focus{
  	-moz-transform: rotate(4deg);
  	-webkit-transform: rotate(4deg); 
  	right:-39px;
- 	top:-11px;
-	display: none;
+ 	top:-11px;	
 }
 
 #col2{
     display: inline-block;
-    margin-left: 50px;
+    margin-left: 5%;
     vertical-align: top;
-    width: 420px;
+    width: 60%;
 }
 
 #joueurs > div{
-	width:204px;
+	width:45%;
 	display: inline-block;
 	border-radius: 7px;
 	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
@@ -268,14 +286,14 @@ input:focus{
 }
 
 #possibilites li{
-    border-radius: 7px 7px 7px 7px;
+	border-radius: 7px 7px 7px 7px;
     box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
     -moz-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
     -webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.16);
     display: inline-block;
-    margin-right: 4px;
+    margin-right: 2%;
     padding:10px;
-    width: 114px;
+    width: 30%;
     text-align: center;
     font-size: 18px;
 }
@@ -296,12 +314,12 @@ input:focus{
 	-webkit-box-shadow: 0px 0px 10px rgba(12,93,165,0.7), inset 0 0 10px rgba(0,0,0,0.06) !important;
 }
 
-#dices{
+#des{
 	margin-top: 20px;
 }
 
 
-#dices li{
+#des li{
 	display: inline-block;
 	width:90px;
 	height:90px;
@@ -316,43 +334,54 @@ input:focus{
 	margin-right: 25px;
 }
 
-#dices li:last-child{
+#des li:last-child{
 	margin-right: 0;
 }
 
-#dices .un{
-	background-image: url('../img/un.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
-	background-image: url('../img/un.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+#des .un{
+	background-image: url('/img/un.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('/img/un.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
 }
 
-#dices .deux{
-	background-image: url('../img/deux.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
-	background-image: url('../img/deux.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+#des .deux{
+	background-image: url('/img/deux.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('/img/deux.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
 }
 
-#dices .trois{
-	background-image: url('../img/trois.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
-	background-image: url('../img/trois.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+#des .trois{
+	background-image: url('/img/trois.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('/img/trois.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
 }
 
-#dices .quatre{
-	background-image: url('../img/quatre.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
-	background-image: url('../img/quatre.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+#des .quatre{
+	background-image: url('/img/quatre.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('/img/quatre.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
 }
 
-#dices .cinq{
-	background-image: url('../img/cinq.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
-	background-image: url('../img/cinq.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+#des .cinq{
+	background-image: url('/img/cinq.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('/img/cinq.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
 }
 
-#dices .six{
-	background-image: url('../img/six.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
-	background-image: url('../img/six.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
+#des .six{
+	background-image: url('/img/six.png'),-moz-linear-gradient(top, rgba(255,255,255,0), rgba(0,0,0,0.03));
+	background-image: url('/img/six.png'),-webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(0,0,0,0.03)));
 }
 
-#dices .used{
+#des .used{
 	background-color: #d6d6d6;
 }
 
-#dices .des_roll{
+#des .lock{
+}
+
+/* //////////////////////////// MODE PORTRAIT /////////////////////////////////// */
+
+@media screen AND (max-width:380px){
+	#entrees,
+	#les_bt
+	{
+		display: block;
+		width:100%;
+	}
 }

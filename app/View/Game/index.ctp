@@ -74,7 +74,7 @@ $this->Html->script('/js/modules/zilch.js', false);
             
     </div><!--col2-->   
     
-    <div id="dices">
+    <div id="des">
             <ul>
                     <li class="un used">1</li>
                     <li class="deux lock">2</li>
