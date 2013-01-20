@@ -1,11 +1,9 @@
-var APP_PREFIX = '';
-
 var Zilchotaf = {
     bankable: null,
-    actions: {  'keepalive': APP_PREFIX+'/game/keepalive',
-                'gamestate': APP_PREFIX+'/game/gamestate',
-                'roll': APP_PREFIX+'/game/roll',
-                'bank': APP_PREFIX+'/game/bank'},
+    actions: {  'keepalive': '/game/keepalive',
+                'gamestate': '/game/gamestate',
+                'roll': '/game/roll',
+                'bank': '/game/bank'},
     retrieve: function(action, callback){
         if (this.actions[action]){
             $.getJSON(this.actions[action]+'.json')

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Zilchotaf</title>
-    <link rel="stylesheet" href="<?php echo APP_PREFIX; ?>/css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
   </head>
   <body>

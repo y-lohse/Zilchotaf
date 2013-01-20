@@ -180,8 +180,6 @@ CakeLog::config('error', array(
 	'file' => 'error',
 ));
 
-define('APP_PREFIX', '');
-
 define('ZILCH_TURN_NOT_STARTED', 0);
 define('ZILCH_TURN_PLAYER_1', 1);
 define('ZILCH_TURN_PLAYER_2', 2);
