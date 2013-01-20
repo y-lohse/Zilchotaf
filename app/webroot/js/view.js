@@ -1,4 +1,7 @@
-Zilchotaf.View= {};
+Zilchotaf.View = {
+	lockClass: 'lock',
+	usedClass: 'used'
+};
 
 //gere l'affichage d'informations de jeu au joueur
 Zilchotaf.Output = {
@@ -32,11 +35,11 @@ Zilchotaf.Output = {
         for (var i = 0, l = newdices.length; i < l; i++){
             var valeur = this.cssClasses[newdices[i].value-1];
             $(this.dices[i]).removeClass('un deux trois quatre cinq six').html(newdices[i].value).addClass(valeur);
-            if (newdices[i].lock) $(this.dices[i]).addClass('used').removeClass('lock');
+            if (newdices[i].lock) $(this.dices[i]).addClass(Zilchotaf.View.usedClass).removeClass(Zilchotaf.View.lockClass);
         }
         
         var values = [];
-        this.dices.not('.used').each(function(){
+        this.dices.not('.'+Zilchotaf.View.usedClass).each(function(){
             values.push(this.innerHTML);
         });
         var combinations = Zilchotaf.Zilch.getAllCombinations(values);
@@ -49,7 +52,7 @@ Zilchotaf.Output = {
     turnChange: function(turn){
         this.joueurs.removeClass('atontour');
         (turn === 1) ? this.joueurs.first().addClass('atontour') : this.joueurs.last().addClass('atontour');
-        this.dices.removeClass('used lock');
+        this.dices.removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
         this.disableBank(true);
     },
     bankablePreview: function(preview){
@@ -69,7 +72,7 @@ Zilchotaf.Output = {
         $('#freeroll').hide();
         
         var values = [];
-        $('#des li.lock').each(function(){
+        $('#des li.'+Zilchotaf.View.lockClass).each(function(){
             values.push(parseInt(this.innerHTML));
         });
         
@@ -85,34 +88,28 @@ Zilchotaf.Output = {
             this.disableRoll(false);
             this.disableBank(false);
             
-            if ($('#des').find('li.used').length+values.length === 6) $('#freeroll').show();
+            if ($('#des').find('li.'+Zilchotaf.View.usedClass).length+values.length === 6) $('#freeroll').show();
         }
     },
 };
 
 //gere les commandes envoyées par le joueur
 Zilchotaf.Input = {
-    rollButton: null,
-    bankButton: null,
     propositions: null,
     dices: null,
     init: function(){
-        this.rollButton = $('#roll');
-        this.bankButton = $('#bank');
         this.propositions = $('#possibilites li');
         this.dices = $('#des li');
         
-        this.rollButton.click(this.roll);
-        this.bankButton.click(this.bank);
+        $('#roll').click(this.roll);
+        $('#bank').click(this.bank);
         this.dices.click(this.toggleDiceLock);
         this.propositions.click(this.proposition);
     },
     getLockedDices: function(){
-        var dices = [],
-            index = 1;
-        this.dices.each(function(){
-            if (!$(this).hasClass('lock') && !$(this).hasClass('used')) dices.push(index);
-            index++;
+        var dices = [];
+        this.dices.each(function(index){
+            if (!$(this).hasClass(Zilchotaf.View.lockClass) && !$(this).hasClass(Zilchotaf.View.usedClass)) dices.push(++index);
         });
          
         return dices;
@@ -125,8 +122,8 @@ Zilchotaf.Input = {
                 alert('action interdite');
             }
             else {
-                $('#des li').removeClass('lock used');
-                $('#possibilites li').removeClass('lock');
+                $('#des li').removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
+                $('#possibilites li').removeClass(Zilchotaf.View.lockClass);
                 $('#freeroll').hide();
                 Zilchotaf.GameState.getGameState();
             }
@@ -144,19 +141,19 @@ Zilchotaf.Input = {
         });
     },
     toggleDiceLock: function(){
-        if ($(this).hasClass('used')) return;
+        if ($(this).hasClass(Zilchotaf.View.usedClass)) return;
         else {
-        	$(this).toggleClass('lock');
+        	$(this).toggleClass(Zilchotaf.View.lockClass);
         	Zilchotaf.Output.updatePreviews();
         }
     },
     proposition: function(){
-    	$(this).toggleClass('lock');
+    	$(this).toggleClass(Zilchotaf.View.lockClass);
         var tofind = $(this).data('lock'),
             dices = Zilchotaf.Input.dices;
         if (tofind != '*') dices = dices.filter(':contains("'+tofind+'")');
         dices.each(function(){
-            $.proxy(Zilchotaf.Input.toggleDiceLock, this)();
+            ($.proxy(Zilchotaf.Input.toggleDiceLock, this))();
         });
     }
 };
