@@ -10,7 +10,7 @@ $this->Html->script('/js/modules/zilch.js', false);
 
 <div id="game" style="display: none;">
     <div id="col1">
-            <img src="/zilch/img/logo_partie.png" alt="" />
+            <img src="/img/logo_partie.png" alt="" />
             <div>
                     <input type="button" value="Roll" id="roll" />
                     <span id="freeroll">free</span>
