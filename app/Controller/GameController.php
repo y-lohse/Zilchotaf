@@ -116,7 +116,6 @@ class GameController extends AppController {
 	public function roll(){		
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
-		//on regarde si le joueurs est autorisé a faire cette action
 		$player = $this->Session->read('player');
 		$gameId = $this->Session->read('game_id');
 		
@@ -125,103 +124,103 @@ class GameController extends AppController {
 		
 		$myturn = $this->isPlayersTurn($players, $game);
 		
-		if ($myturn){
-			App::import('Vendor', 'zilch');
-			App::import('Vendor', 'dice');
-			$zilch = $this->createZilch($game);
-			$freeroll = false;
-			
-			if ($game['game_bankable'] == -1 && count($dices) != 6){
-				//premier roll, mais le mec essaye déja de faire des locks, va crever
-				$this->responseJSON(true);
-				return;
-			}
-			else if ((6-count($dices))+$zilch->countLocked() === 6){
-				//en additionant les dès déja utilisés et les dès lockés ce tour ci, tous sont utisés -> freeroll si c'est confirmé
-				$freeroll = true;
-			}
-			
-			//il va falloir mettre a jour les dès
-			$this->Game->id = $gameId;
-			$modified = array();
-			$values = array();
-			
-			foreach ($dices as $dice){
-				array_push($modified, $dice);
-				$value = $zilch->rollDice($dice);
-				array_push($values, $value);
-				$this->Game->set('game_dice'.$dice, $value);
-			}
-			
-			//on lock les dès restants
-			$diff = array_diff(array(1,2,3,4,5,6), $modified);
-			
-			//bon la on a fini les rolls, et $zilch a des valeurs de dès a jour, mais les locks ne sont pas encore a jour
-			//c'est le moment de regarder si tous les dès lockés sont valide
-			if (!$zilch->everythingResolves($diff)){
-				$this->responseJSON(true);
-				return;
-			}
-			
-			//on calcule la valeur bankable
-			$bankable = $zilch->getBankable($diff);
-			
-			//il faut que les des que le joueur essaye de banker aient une valeur, sauf au premier tour
-			if ($bankable === 0 && $game['game_bankable'] != -1){
-				$this->responseJSON(true);
-				return;
-			}
-			
-			//on procede aux locks
-			$newlock = false;
-			foreach ($diff as $lock){
-				if (!$zilch->getDiceLock($lock)) $newlock = true;//compara a l'état précédent
-				
-				$zilch->lockDice($lock);
-				$this->Game->set('game_dice'.$lock.'_lock', 1);
-			}
-			
-			//aucun dès n'a été locké, on envoi chier
-			if (!$newlock && $game['game_bankable'] != -1){
-				$this->responseJSON(true);
-				return;
-			}
-			
-			//la, on a fini la plupart des mises a jour
-			//les dès sont lockés, la somme bankable est calculée, on a déja envoyé chié pour la plupart des cas
-			
-			//ce qu'il reste a faire, c'est déterminer si le tour est terminé ou non, sachant que le joueur viens de demander un roll
-			if ($freeroll && $zilch->countLocked() === 6){
-				//echo 'okkkkkkkk';
-				//freeroll réussi
-				//on dévérouille tous les dès et on les rerolls
-				for ($i = 1; $i < 7; $i++){
-					$zilch->unlockDice($i);
-					$this->Game->set('game_dice'.$i.'_lock', 0);
-					$value = $zilch->rollDice($i);
-					$this->Game->set('game_dice'.$i, $value);
-				}
-			}
-			
-			//la, on a mis a jour la banque possible pour le joueur
-			//la derniere chose a faire, c'est voir si le tour est terminé ou non
-			//globalement c'est pas compliqué, on considere les des ouverts, si une combinaison est possible, on laisse jouer
-			if (!$freeroll && !$zilch->resolvable()){
-				if ($game['game_lastround']) $this->endGame();
-				else $this->endTurn($game['game_state']);
-				return;
-			}
-			
-			//tout ets ok, on sauvegarde
-			if ($game['game_bankable'] == -1) $game['game_bankable'] = 0;
-			$this->Game->set('game_bankable', $game['game_bankable']+$bankable);
-			
-			$this->Game->save();
-			$this->responseJSON(false, array('values'=>$values));
+		if (!$myturn){
+			$this->set('error', true);
+			return;
 		}
-		else {
-			$this->responseJSON(true);
+		
+		App::import('Vendor', 'zilch');
+		App::import('Vendor', 'dice');
+		$zilch = $this->createZilch($game);
+		$freeroll = false;
+		
+		if ($game['game_bankable'] == -1 && count($dices) != 6){
+			//premier roll, mais le mec essaye déja de faire des locks, va crever
+			$this->set('error', true);
+			return;
 		}
+		else if ((6-count($dices))+$zilch->countLocked() === 6){
+			//en additionant les dès déja utilisés et les dès lockés ce tour ci, tous sont utisés -> freeroll si c'est confirmé
+			$freeroll = true;
+		}
+		
+		//il va falloir mettre a jour les dès
+		$this->Game->id = $gameId;
+		$modified = array();
+		$values = array();
+		
+		foreach ($dices as $dice){
+			array_push($modified, $dice);
+			$value = $zilch->rollDice($dice);
+			array_push($values, $value);
+			$this->Game->set('game_dice'.$dice, $value);
+		}
+		
+		//on lock les dès restants
+		$diff = array_diff(array(1,2,3,4,5,6), $modified);
+		
+		//bon la on a fini les rolls, et $zilch a des valeurs de dès a jour, mais les locks ne sont pas encore a jour
+		//c'est le moment de regarder si tous les dès lockés sont valide
+		if (!$zilch->everythingResolves($diff)){
+			$this->set('error', true);
+			return;
+		}
+		
+		//on calcule la valeur bankable
+		$bankable = $zilch->getBankable($diff);
+		
+		//les des qui sont vérouillés doivent avoir une valeur, mais c'ets peut etre a vérifier AVANT les rolls
+		if ($bankable === 0 && $game['game_bankable'] != -1){
+			$this->set('error', true);
+			return;
+		}
+		
+		//on procede aux locks
+		$newlock = false;
+		foreach ($diff as $lock){
+			if (!$zilch->getDiceLock($lock)) $newlock = true;//compara a l'état précédent
+			
+			$zilch->lockDice($lock);
+			$this->Game->set('game_dice'.$lock.'_lock', true);
+		}
+		
+		//aucun dès n'a été locké, on envoi chier
+		if (!$newlock && $game['game_bankable'] != -1){
+			$this->set('error', true);
+			return;
+		}
+		
+		//la, on a fini la plupart des mises a jour
+		//les dès sont lockés, la somme bankable est calculée, on a déja envoyé chié pour la plupart des cas
+		
+		//ce qu'il reste a faire, c'est déterminer si le tour est terminé ou non, sachant que le joueur viens de demander un roll
+		if ($freeroll && $zilch->countLocked() === 6){
+			//freeroll réussi
+			//on dévérouille tous les dès et on les rerolls
+			for ($i = 1; $i < 7; $i++){
+				$zilch->unlockDice($i);
+				$this->Game->set('game_dice'.$i.'_lock', false);
+				$value = $zilch->rollDice($i);
+				$this->Game->set('game_dice'.$i, $value);
+			}
+		}
+		
+		//la, on a mis a jour la banque possible pour le joueur
+		//la derniere chose a faire, c'est voir si le tour est terminé ou non
+		//globalement c'est pas compliqué, on considere les des ouverts, si une combinaison est possible, on laisse jouer
+		if (!$freeroll && !$zilch->resolvable()){
+			//le tour est terminé
+			if ($game['game_lastround']) $this->endGame();
+			else $this->endTurn($game['game_state']);
+			return;
+		}
+		
+		//tout ets ok, on sauvegarde
+		if ($game['game_bankable'] == -1) $game['game_bankable'] = 0;
+		$this->Game->set('game_bankable', $game['game_bankable']+$bankable);
+		
+		$this->Game->save();
+		$this->set('dara', array('values'=>$values));
 	}
 	
 	public function bank(){
@@ -236,55 +235,55 @@ class GameController extends AppController {
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
 		//il faut que ce soit a nous de jouer et qu'on ai fais au moins un roll
-		if ($myturn && $game['game_bankable'] != -1){
-			App::import('Vendor', 'zilch');
-			App::import('Vendor', 'dice');
-			$zilch = $this->createZilch($game);
-			
-			//on calcule combien de pointssont bankables
-			$dices = array_diff(array(1,2,3,4,5,6), $dices);
-			$selected = array();
-			
-			foreach ($dices as $index){
-				if (!$zilch->getDiceLock($index)) array_push($selected, $index);
-			}
-			
-			//on y ajoute ce qui était déja bankable
-			$bankable = $zilch->getBankable($selected);
-			$bankable += $game['game_bankable'];
-			
-			//pas assez pour banker
-			if ($bankable < ZILCH_MIN_BANK){
-				$this->set('error', true);
-				return;
-			}
-			else{
-				//on sauvegarde les points
-				$this->Player->id = $player['id'];
-				$this->Player->set('player_score', $bankable+$this->Player->getPlayerScore($player['id']));
-				$this->Player->save();
-					
-				//fin de partie ou fin de tour tout bete
-				foreach ($players as $player){
-					if ((int)$player['Player']['player_score']+$bankable >= ZILCH_WIN) {
-						//on en a au moins un au dessus de 10000, processus de fin de jeu
-						if ($game['game_lastround'] == 1){
-							$this->endGame();
-							return;
-						}
-						else {
-							//il viens de l'atteindre, encore un tour
-							$this->Game->id = $gameId;
-							$this->Game->set('game_lastround', 1);
-						}
+		if (!$myturn || $game['game_bankable'] != -1){
+			$this->set('error', true);
+			return;
+		}
+		
+		App::import('Vendor', 'zilch');
+		App::import('Vendor', 'dice');
+		$zilch = $this->createZilch($game);
+		
+		//on calcule combien de pointssont bankables
+		$dices = array_diff(array(1,2,3,4,5,6), $dices);
+		$selected = array();
+		
+		foreach ($dices as $index){
+			if (!$zilch->getDiceLock($index)) array_push($selected, $index);
+		}
+		
+		//on y ajoute ce qui était déja bankable
+		$bankable = $zilch->getBankable($selected);
+		$bankable += $game['game_bankable'];
+		
+		//pas assez pour banker
+		if ($bankable < ZILCH_MIN_BANK){
+			$this->set('error', true);
+			return;
+		}
+		else{
+			//on sauvegarde les points
+			$this->Player->id = $player['id'];
+			$this->Player->set('player_score', $bankable+$this->Player->getPlayerScore($player['id']));
+			$this->Player->save();
+				
+			//fin de partie ou fin de tour tout bete
+			foreach ($players as $player){
+				if ((int)$player['Player']['player_score']+$bankable >= ZILCH_WIN) {
+					//on en a au moins un au dessus de 10000, processus de fin de jeu
+					if ($game['game_lastround'] == 1){
+						$this->endGame();
+						return;
+					}
+					else {
+						//il viens de l'atteindre, encore un tour
+						$this->Game->id = $gameId;
+						$this->Game->set('game_lastround', 1);
 					}
 				}
-					
-				$this->endTurn($game['game_state']);	
 			}
-		}
-		else {
-			$this->set('error', true);
+				
+			$this->endTurn($game['game_state']);	
 		}
 	}
 	
