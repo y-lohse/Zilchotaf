@@ -6,7 +6,7 @@ class Game extends AppModel {
 	
 	public function nameIsTaken($name){
 		$result = $this->findByGameName($name);
-		return ($result === false) ? false : true;
+		return (count($result) === 0) ? false : true;
 	}
 	
 	public function getGameId($name){
@@ -16,7 +16,7 @@ class Game extends AppModel {
 	}
 	
 	public function getGame($id){
-		$result = $this->findBYGameId($id);
+		$result = $this->findByGameId($id);
 		return $result['Game'];
 	}
 }

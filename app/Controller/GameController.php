@@ -1,6 +1,16 @@
 <?php
 class GameController extends AppController {
 	public $uses = array('Player', 'Game');
+	public $components = array('RequestHandler');
+	
+	public function beforeFilter(){
+		parent::beforeFilter();
+		
+		if ($this->RequestHandler->ext === 'json'){
+			$this->layout = '';
+			$this->view = 'data';
+		}
+	}
 	
 	public function index($id=NULL){
 		//@TODO : verifier que le game id est le bon
@@ -27,8 +37,6 @@ class GameController extends AppController {
 	private function responseJSON($error, $data=array()){
 		$this->set('data', $data);
 		$this->set('error', $error);
-		$this->layout = '';
-		$this->render(null, null, VIEWS.'elements'.DS.'json.ctp');
 	}
 	
 	private function getGameStatus($gameid){

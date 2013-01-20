@@ -6,7 +6,7 @@ class Player extends AppModel {
 	
 	public function nameIsTaken($name){
 		$result = $this->findByPlayerName($name);
-		return ($result === false) ? false : true;
+		return (count($result) === 0) ? false : true;
 	}
 	
 	public function getPlayersFromGame($gameId){

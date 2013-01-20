@@ -4,7 +4,7 @@ class IndexController extends AppController {
 	
 	public function index(){
 		if ($this->request->isPost()){
-			$action = $this->params['form']['action'];
+			$action = $this->data['action'];
 			$pseudo = $this->data['name'];
 			$partie = $this->data['gamename'];
 			
