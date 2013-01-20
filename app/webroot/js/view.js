@@ -24,7 +24,7 @@ Zilchotaf.Output = {
         this.bankButton = $('#bank');
     },
     update: function(data){
-        this.bankable.html(Zilchotaf.bankable || 0);
+        this.bankable.html(Zilchotaf.GameController.bankable || 0);
                 
         if (this.p1score.html() != data.players[0].score) this.p1score.html(data.players[0].score || 0);
         if (this.p2score.html() != data.players[1].score) this.p2score.html(data.players[1].score || 0);
