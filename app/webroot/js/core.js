@@ -9,7 +9,7 @@ var Zilchotaf = {
                 'bank': APP_PREFIX+'/game/bank'},
     retrieve: function(action, callback){
         if (this.actions[action]){
-            $.getJSON(this.actions[action])
+            $.getJSON(this.actions[action]+'.json')
             .success(function(response){
                 callback(true, response);
             }).error(function(){
