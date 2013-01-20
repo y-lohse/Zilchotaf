@@ -8,6 +8,12 @@ $this->Html->script('/js/modules/zilch.js', false);
     Waiting for other players
 </div>
 
+<div id="end" style="display: none;">
+	<a href="/index/signoff">
+		Fin de partie
+	</a>
+</div>
+
 <div id="game" style="display: none;">
     <div id="col1">
             <img src="/img/logo_partie.png" alt="" />

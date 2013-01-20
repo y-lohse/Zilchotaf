@@ -85,6 +85,14 @@ class IndexController extends AppController {
 	}
 	
 	public function signoff(){
+		$gameId = $this->Session->read('game_id');
+		$players = $this->Player->getPlayersFromGame($gameId);
+		debug($players);
+		foreach ($players as $player){
+			$this->Player->delete($player['Player']['player_id']);
+		}
+		
+		$this->Game->delete($gameId);
 		$this->Session->destroy();
 		$this->redirect('/');
 	}

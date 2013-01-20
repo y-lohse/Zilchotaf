@@ -87,7 +87,8 @@ class GameController extends AppController {
 		$players = $this->Player->getPlayersFromGame($gameId);
 		
 		$myturn = $this->isPlayersTurn($players, $game);
-		$state = ($game['game_state'] == ZILCH_TURN_PLAYER_1) ? 1 : 2;
+		//$state = ($game['game_state'] == ZILCH_TURN_PLAYER_1) ? 1 : 2;
+		$state = (int)$game['game_state'];
 		
 		$data = array();
 		$data['state'] = $state;

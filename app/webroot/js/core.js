@@ -58,8 +58,15 @@ var Zilchotaf = {
     setGameState: function(state, myturn){
         if (state != this.__gameState){
             this.__gameState = state;
-            Zilchotaf.OutputManager.turnChange(state);
-            Zilchotaf.InputManager.propositions.hide();
+            
+            if (state != 3){
+            	Zilchotaf.OutputManager.turnChange(state);
+                Zilchotaf.InputManager.propositions.hide();
+            }
+            else{
+            	$('#game').hide();
+            	$('#end').show();
+            }
         }
     }
 };
