@@ -1,7 +1,7 @@
-cake/*
 plugins/*
 vendors/*
 app/config/database.php
+app/tmp/*
 
 #################
 ## Eclipse
