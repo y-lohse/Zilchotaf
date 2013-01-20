@@ -58,7 +58,7 @@ class Zilch{
         foreach ($dices as $dice){
             if (!$this->dices[$dice-1]->getLock()) array_push($values, $this->dices[$dice-1]->getValue());
         }
-        
+       	
         return $this->resolveCombination($values);
     }
     

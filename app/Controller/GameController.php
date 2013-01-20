@@ -146,8 +146,8 @@ class GameController extends AppController {
 		
 		//il va falloir mettre a jour les dès
 		$this->Game->id = $gameId;
-		$modified = array();
-		$values = array();
+		$modified = array();//liste des dès que l'on va roller
+		$values = array();//liste des nouvelles valeurs des dès, mais a voir si c'ets utilisé
 		
 		foreach ($dices as $dice){
 			array_push($modified, $dice);
@@ -210,7 +210,7 @@ class GameController extends AppController {
 		//globalement c'est pas compliqué, on considere les des ouverts, si une combinaison est possible, on laisse jouer
 		if (!$freeroll && !$zilch->resolvable()){
 			//le tour est terminé
-			if ($game['game_lastround']) $this->endGame();
+			if ((bool)$game['game_lastround']) $this->endGame();
 			else $this->endTurn($game['game_state']);
 			return;
 		}
@@ -235,6 +235,7 @@ class GameController extends AppController {
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
 		//il faut que ce soit a nous de jouer et qu'on ai fais au moins un roll
+		var_dump($myturn);
 		if (!$myturn || $game['game_bankable'] === -1){
 			$this->set('error', true);
 			return;
@@ -268,10 +269,13 @@ class GameController extends AppController {
 			$this->Player->save();
 				
 			//fin de partie ou fin de tour tout bete
-			foreach ($players as $player){
-				if ((int)$player['Player']['player_score']+$bankable >= ZILCH_WIN) {
+			foreach ($players as $currentPlayer){
+				$playerBankable = (int)$currentPlayer['Player']['player_score'];
+				if ($currentPlayer['Player']['player_id'] == $player['id']) $playerBankable += $bankable;
+				
+				if ($playerBankable >= ZILCH_WIN) {
 					//on en a au moins un au dessus de 10000, processus de fin de jeu
-					if ($game['game_lastround'] == 1){
+					if ((bool)$game['game_lastround']){
 						$this->endGame();
 						return;
 					}
@@ -333,7 +337,7 @@ class GameController extends AppController {
 		//@TODO : fin de match, remise a 0 des scores, ec
 		$this->Game->set('game_state', ZILCH_TURN_ENDED);
 		$this->Game->save();
-		$this->responseJSON(true);
+		$this->set('error', true);
 	}
 }
 ?>

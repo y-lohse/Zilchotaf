@@ -35,6 +35,7 @@ class IndexController extends AppController {
 					$gameId = $this->Game->getGameId($partie);
 					//on verifie qu'il reste de la place
 					$players = $this->Player->getPlayersFromGame($gameId);
+					
 					if (count($players) >= 2) {
 						$this->Session->setFlash("This game is allready full", 'error');
 						return;	
