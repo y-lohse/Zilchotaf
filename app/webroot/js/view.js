@@ -1,9 +1,14 @@
+Zilchotaf.View= {};
+
+//gere l'affichage d'informations de jeu au joueur
 Zilchotaf.Output = {
     bankable: null,
     p1score: null,
     p2score: null,
     dices: null,
     possibilites: null,
+    rollButton: null,
+    bankButton: null,
     cssClasses: 'un deux trois quatre cinq six'.split(' '),
     init: function(){
         this.bankable = $('#bankable');
@@ -12,6 +17,8 @@ Zilchotaf.Output = {
         this.joueurs = $('#joueurs > div');
         this.dices = $('#des li');
         this.possibilites = $('#possibilites li');
+        this.rollButton = $('#roll');
+        this.bankButton = $('#bank');
     },
     update: function(data){
         this.bankable.html(Zilchotaf.bankable || 0);
@@ -42,16 +49,48 @@ Zilchotaf.Output = {
     turnChange: function(turn){
         this.joueurs.removeClass('atontour');
         (turn === 1) ? this.joueurs.first().addClass('atontour') : this.joueurs.last().addClass('atontour');
-        $('#des li').removeClass('used lock');
-        Zilchotaf.Input.disableBank(true);
+        this.dices.removeClass('used lock');
+        this.disableBank(true);
     },
     bankablePreview: function(preview){
         var total = Zilchotaf.GameController.bankable+preview;
         this.bankable.html(total);
-        if (total >= 300) Zilchotaf.Input.disableBank(false);
-    }
+        if (total >= 300) this.disableBank(false);
+    },
+    disableBank: function(disable){
+        if (disable) this.bankButton.attr('disabled', 'disabled');
+        else this.bankButton.removeAttr('disabled');
+    },
+    disableRoll: function(disable){
+        if (disable) this.rollButton.attr('disabled', 'disabled');
+        else this.rollButton.removeAttr('disabled');
+    },
+    updatePreviews: function(){
+        $('#freeroll').hide();
+        
+        var values = [];
+        $('#des li.lock').each(function(){
+            values.push(parseInt(this.innerHTML));
+        });
+        
+        var bankable = Zilchotaf.Zilch.resolveCombination(values),
+            resolvable = Zilchotaf.Zilch.eveythingResolves(values);
+        this.bankablePreview(bankable);
+        
+        if (!resolvable){
+            this.disableRoll(true);
+            this.disableBank(true);
+        }
+        else {
+            this.disableRoll(false);
+            this.disableBank(false);
+            
+            if ($('#des').find('li.used').length+values.length === 6) $('#freeroll').show();
+        }
+    },
 };
 
+//gere les commandes envoyées par le joueur
 Zilchotaf.Input = {
     rollButton: null,
     bankButton: null,
@@ -66,7 +105,7 @@ Zilchotaf.Input = {
         this.rollButton.click(this.roll);
         this.bankButton.click(this.bank);
         this.dices.click(this.toggleDiceLock);
-        this.propositions.click(this.accept);
+        this.propositions.click(this.proposition);
     },
     getLockedDices: function(){
         var dices = [],
@@ -87,6 +126,7 @@ Zilchotaf.Input = {
             }
             else {
                 $('#des li').removeClass('lock used');
+                $('#possibilites li').removeClass('lock');
                 $('#freeroll').hide();
                 Zilchotaf.GameState.getGameState();
             }
@@ -105,38 +145,12 @@ Zilchotaf.Input = {
     },
     toggleDiceLock: function(){
         if ($(this).hasClass('used')) return;
-        $(this).toggleClass('lock');
-        $('#freeroll').hide();
-        
-        var values = [];
-        $('#des li.lock').each(function(){
-            values.push(this.innerHTML);
-        });
-        
-        var bankable = Zilchotaf.Zilch.resolveCombination(values),
-            resolvable = Zilchotaf.Zilch.eveythingResolves(values);
-        Zilchotaf.Output.bankablePreview(bankable);
-        
-        if (!resolvable){
-            Zilchotaf.Input.disableRoll(true);
-            Zilchotaf.Input.disableBank(true);
-        }
         else {
-            Zilchotaf.Input.disableRoll(false);
-            Zilchotaf.Input.disableBank(false);
-            
-            if ($('#des').find('li.used').length+values.length === 6) $('#freeroll').show();
+        	$(this).toggleClass('lock');
+        	Zilchotaf.Output.updatePreviews();
         }
     },
-    disableRoll: function(disable){
-        if (disable) this.rollButton.attr('disabled', 'disabled');
-        else this.rollButton.removeAttr('disabled');
-    },
-    disableBank: function(disable){
-        if (disable) this.bankButton.attr('disabled', 'disabled');
-        else this.bankButton.removeAttr('disabled');
-    },
-    accept: function(){
+    proposition: function(){
     	$(this).toggleClass('lock');
         var tofind = $(this).data('lock'),
             dices = Zilchotaf.Input.dices;
