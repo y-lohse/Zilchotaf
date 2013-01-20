@@ -46,8 +46,7 @@ Zilchotaf.InputManager = {
                 alert('action interdite');
             }
             else {
-                $('#des li.lock').removeClass('lock');
-                $('#des li.used').removeClass('used');
+                $('#des li').removeClass('lock used');
                 $('#freeroll').hide();
                 Zilchotaf.GameManager.getGameState();
             }
@@ -98,6 +97,7 @@ Zilchotaf.InputManager = {
         else this.bankButton.removeAttr('disabled');
     },
     accept: function(){
+    	$(this).toggleClass('lock');
         var tofind = $(this).data('lock'),
             dices = Zilchotaf.InputManager.dices;
         if (tofind != '*') dices = dices.filter(':contains("'+tofind+'")');
@@ -140,7 +140,7 @@ Zilchotaf.OutputManager = {
         }
         
         var values = [];
-        $('#des li').not('.used').each(function(){
+        this.dices.not('.used').each(function(){
             values.push(this.innerHTML);
         });
         var combinations = Zilchotaf.Zilch.getAllCombinations(values);
