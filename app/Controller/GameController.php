@@ -110,7 +110,7 @@ class GameController extends AppController {
 		}
 		$data['dices'] = $dices;
 		
-		$this->responseJSON(false, $data);
+		$this->set('data', $data);
 	}
 	
 	public function roll(){		
@@ -220,7 +220,6 @@ class GameController extends AppController {
 			$this->responseJSON(false, array('values'=>$values));
 		}
 		else {
-			
 			$this->responseJSON(true);
 		}
 	}
@@ -242,6 +241,7 @@ class GameController extends AppController {
 			App::import('Vendor', 'dice');
 			$zilch = $this->createZilch($game);
 			
+			//on calcule combien de pointssont bankables
 			$dices = array_diff(array(1,2,3,4,5,6), $dices);
 			$selected = array();
 			
@@ -249,38 +249,42 @@ class GameController extends AppController {
 				if (!$zilch->getDiceLock($index)) array_push($selected, $index);
 			}
 			
+			//on y ajoute ce qui était déja bankable
 			$bankable = $zilch->getBankable($selected);
 			$bankable += $game['game_bankable'];
 			
+			//pas assez pour banker
 			if ($bankable < ZILCH_MIN_BANK){
-				$this->responseJSON(true);
+				$this->set('error', true);
 				return;
 			}
-			
-			$this->Player->id = $player['id'];
-			$this->Player->set('player_score', $bankable+$this->Player->getPlayerScore($player['id']));
-			$this->Player->save();
-			$this->responseJSON(false);
-			
-			foreach ($players as $player){
-				if ((int)$player['Player']['player_score']+$bankable >= ZILCH_WIN) {
-					//on en a au moins un au dessus de 10000, processus de fin de jeu
-					if ($game['game_lastround'] == 1){
-						$this->endGame();
-						return;
-					}
-					else {
-						//il viens de l'atteindre, encore un tour
-						$this->Game->id = $gameId;
-						$this->Game->set('game_lastround', 1);
+			else{
+				//on sauvegarde les points
+				$this->Player->id = $player['id'];
+				$this->Player->set('player_score', $bankable+$this->Player->getPlayerScore($player['id']));
+				$this->Player->save();
+					
+				//fin de partie ou fin de tour tout bete
+				foreach ($players as $player){
+					if ((int)$player['Player']['player_score']+$bankable >= ZILCH_WIN) {
+						//on en a au moins un au dessus de 10000, processus de fin de jeu
+						if ($game['game_lastround'] == 1){
+							$this->endGame();
+							return;
+						}
+						else {
+							//il viens de l'atteindre, encore un tour
+							$this->Game->id = $gameId;
+							$this->Game->set('game_lastround', 1);
+						}
 					}
 				}
+					
+				$this->endTurn($game['game_state']);	
 			}
-			
-			$this->endTurn($game['game_state']);
 		}
 		else {
-			$this->responseJSON(true);
+			$this->set('error', true);
 		}
 	}
 	
