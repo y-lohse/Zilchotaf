@@ -47,6 +47,7 @@ Zilchotaf.InputManager = {
             }
             else {
                 $('#dices li.lock').removeClass('lock');
+                $('#dices li.used').removeClass('used');
                 $('#freeroll').hide();
                 Zilchotaf.GameManager.getGameState();
             }
