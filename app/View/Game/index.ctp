@@ -6,16 +6,18 @@ $this->Html->script('/js/modules/zilch.js', false);
 ?>
 <div id="waiting">Waiting for other players</div>
 
-<div id="end" style="display: none;">
+<div id="end" class="hidden">
 	<a href="/index/signoff"> Fin de partie </a>
 </div>
 
-<div id="game" style="display: none;">
+<div id="game" class="hidden">
 	<div id="col1">
-		<img src="/img/logo_partie.png" alt="" />
+		<img src="/img/logo_partie.png" alt="Zilchotaf Beta" />
 		<div>
-			<input type="button" value="Roll" id="roll" /> <span id="freeroll">free</span>
-			<input type="button" value="Bank" id="bank" /> <span id="bankable">2500</span>
+			<input type="button" value="Roll" id="roll" /> 
+			<span id="freeroll" class="hidden">free</span>
+			<input type="button" value="Bank" id="bank" /> 
+			<span id="bankable">2500</span>
 		</div>
 	</div>
 	<!--col1-->
