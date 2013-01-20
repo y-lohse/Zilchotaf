@@ -1,6 +1,6 @@
 //garde le contact avec le serveur et vérifie que tout le monde en fais autant
 Zilchotaf.KeepAlive = {
-    KEEPALIVE_RYTHM: 2000,
+    KEEPALIVE_RYTHM: 8000,
     getStatus: function(){
         Zilchotaf.retrieve('keepalive', function(ok, status){
             if (ok){
