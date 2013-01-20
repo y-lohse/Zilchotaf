@@ -1,3 +1,4 @@
+lib/*
 plugins/*
 vendors/*
 app/config/database.php
