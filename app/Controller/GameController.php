@@ -139,7 +139,7 @@ class GameController extends AppController {
 			$this->set('error', true);
 			return;
 		}
-		else if ((6-count($dices))+$zilch->countLocked() === 6){
+		else if (count($dices) === 0){
 			//en additionant les dès déja utilisés et les dès lockés ce tour ci, tous sont utisés -> freeroll si c'est confirmé
 			$freeroll = true;
 		}
@@ -235,7 +235,7 @@ class GameController extends AppController {
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
 		//il faut que ce soit a nous de jouer et qu'on ai fais au moins un roll
-		if (!$myturn || $game['game_bankable'] != -1){
+		if (!$myturn || $game['game_bankable'] === -1){
 			$this->set('error', true);
 			return;
 		}
