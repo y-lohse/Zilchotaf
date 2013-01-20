@@ -26,6 +26,7 @@ class Zilch{
     public function lockDice($i){
         $this->dices[$i-1]->setLock(true);
     }
+    
     public function unlockDice($i){
         $this->dices[$i-1]->setLock(false);
     }

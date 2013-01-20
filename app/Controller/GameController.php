@@ -3,12 +3,20 @@ class GameController extends AppController {
 	public $uses = array('Player', 'Game');
 	public $components = array('RequestHandler');
 	
+	const MAX_KEEPALIVE= 6;
+	
 	public function beforeFilter(){
 		parent::beforeFilter();
 		
 		if ($this->RequestHandler->ext === 'json'){
 			$this->layout = '';
 			$this->view = 'data';
+			$this->set('data', array());
+			$this->set('error', false);
+		}
+		
+		if (!$this->checkAllowed()){
+			$this->responseJSON(true);
 		}
 	}
 	
@@ -47,11 +55,10 @@ class GameController extends AppController {
 		if (count($players) !== 2) $status = false;
 		
 		//bon apres faut qu'ils soient alive
-		define('MAX_KEEPALIVE', 6);
 		$now = time();
 		
 		foreach ($players as $player){
-			if ($now-(int)$player['Player']['player_keepalive'] > MAX_KEEPALIVE){
+			if ($now-(int)$player['Player']['player_keepalive'] > $this::MAX_KEEPALIVE){
 				$status = false;
 				break;
 			}
@@ -61,11 +68,6 @@ class GameController extends AppController {
 	}
 	
 	public function status(){
-		if (!$this->checkAllowed()){
-			$this->responseJSON(true);
-			return;
-		}
-		
 		//on remet a jout le timestamp, ca résoud un bug pour le 2eme qui rejoins, j'ai pas trop compris pourquoi
 		$player = $this->Session->read('player');
 		$this->Player->id = $player['id'];
@@ -76,15 +78,11 @@ class GameController extends AppController {
 		$status = $this->getGameStatus($gameId);
 		
 		$data = array('status'=>$status);
-		$this->responseJSON(false, $data);
+		$this->set('data', $data);
+		//$this->responseJSON(false, $data);
 	}
 	
-	public function keepalive(){
-		if (!$this->checkAllowed()){
-			$this->responseJSON(true);
-			return;
-		}
-		
+	public function keepalive(){		
 		//déja on se met a jour
 		$player = $this->Session->read('player');
 		$this->Player->id = $player['id'];
@@ -99,11 +97,6 @@ class GameController extends AppController {
 	}
 	
 	public function gamestate(){
-		if (!$this->checkAllowed()){
-			$this->responseJSON(true);
-			return;
-		}
-		
 		$gameId = $this->Session->read('game_id');
 		$game = $this->Game->getGame($gameId);
 		$players = $this->Player->getPlayersFromGame($gameId);
@@ -156,12 +149,7 @@ class GameController extends AppController {
 		return new Zilch($dices);
 	}
 	
-	public function roll(){
-		if (!$this->checkAllowed()){
-			$this->responseJSON(true);
-			return;
-		}
-		
+	public function roll(){		
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
 		//on regarde si le joueurs est autorisé a faire cette action
@@ -274,11 +262,6 @@ class GameController extends AppController {
 	}
 	
 	public function bank(){
-		if (!$this->checkAllowed()){
-			$this->responseJSON(true);
-			return;
-		}
-		
 		//on regarde si le joueurs est autorisé a faire cette action
 		$player = $this->Session->read('player');
 		$gameId = $this->Session->read('game_id');
