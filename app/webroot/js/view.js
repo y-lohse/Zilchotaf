@@ -119,7 +119,8 @@ Zilchotaf.Input = {
         
         Zilchotaf.tryAction('roll', {dices: dices}, function(ok, response){
             if (ok && response.error){
-                alert('action interdite');
+            	//c'etsinterdit de faire un roll, on refresh le gametstae, ca devrait dire pourquoi.
+                Zilchotaf.GameState.getGameState();
             }
             else {
                 $('#des li').removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
