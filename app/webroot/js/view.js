@@ -12,7 +12,7 @@ Zilchotaf.Output = {
     possibilites: null,
     rollButton: null,
     bankButton: null,
-    cssClasses: 'un deux trois quatre cinq six'.split(' '),
+    cssClasses: 'un deux trois quatre cinq six',
     init: function(){
         this.bankable = $('#bankable');
         this.p1score = $('#score1');
@@ -23,20 +23,19 @@ Zilchotaf.Output = {
         this.rollButton = $('#roll');
         this.bankButton = $('#bank');
     },
-    update: function(data){
-        this.bankable.html(Zilchotaf.GameController.bankable || 0);
+    update: function(bankable, player1, player2, dices, bankingAllowed, combinaisons){
+        this.bankable.html(bankable);
                 
-        if (this.p1score.html() != data.players[0].score) this.p1score.html(data.players[0].score || 0);
-        if (this.p2score.html() != data.players[1].score) this.p2score.html(data.players[1].score || 0);
-        this.joueurs.first().find('h2').html(data.players[0].name);
-        this.joueurs.last().find('h2').html(data.players[1].name);
+        this.p1score.html(player1.score);
+        this.p2score.html(player2.score);
+        this.joueurs.first().find('h2').html(player1.name);
+        this.joueurs.last().find('h2').html(player2.name);
         
         this.dices.removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
-        var newdices = data.dices;
-        for (var i = 0, l = newdices.length; i < l; i++){
-            var valeur = this.cssClasses[newdices[i].value-1];
-            $(this.dices[i]).removeClass('un deux trois quatre cinq six').html(newdices[i].value).addClass(valeur);
-            if (newdices[i].lock) $(this.dices[i]).addClass(Zilchotaf.View.usedClass).removeClass(Zilchotaf.View.lockClass);
+        for (var i = 0, l = dices.length; i < l; i++){
+            var diceClass = this.cssClasses.split(' ')[dices[i].value-1];
+            $(this.dices[i]).removeClass(this.cssClasses).html(dices[i].value).addClass(diceClass);
+            if (dices[i].lock) $(this.dices[i]).addClass(Zilchotaf.View.usedClass);
         }
         
         var values = [];
@@ -46,13 +45,14 @@ Zilchotaf.Output = {
         
         this.possibilites.removeClass(Zilchotaf.View.lockClass);
         var combinations = Zilchotaf.Zilch.getAllCombinations(values);
+        this.possibilites.removeClass(Zilchotaf.View.lockClass);
         for (var i = 0, l = combinations.length; i < l; i++){
             $(this.possibilites[i]).data('lock', combinations[i].lock).find('p:first').html(combinations[i].name).end().find('p:last').html(combinations[i].score);
         }
         
         $('#freeroll').hide();
         
-        if (data.bankable > -1) this.possibilites.show().slice(combinations.length).hide();
+        if (bankingAllowed) this.possibilites.show().slice(combinations.length).hide();
     },
     turnChange: function(turn){
         this.joueurs.removeClass('atontour');
