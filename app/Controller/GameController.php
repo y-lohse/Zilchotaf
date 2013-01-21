@@ -3,7 +3,7 @@ class GameController extends AppController {
 	public $uses = array('Player', 'Game');
 	public $components = array('RequestHandler');
 	
-	const MAX_KEEPALIVE= 8;
+	const MAX_KEEPALIVE = 10;
 	
 	public function beforeFilter(){
 		parent::beforeFilter();
