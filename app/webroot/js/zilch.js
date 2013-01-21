@@ -1,4 +1,4 @@
-//voir zilch.php pour la version commentéee
+//mechansime de jeux du zilch
 Zilchotaf.Zilch = {
     figures: {
         one: {  'name': 'one',

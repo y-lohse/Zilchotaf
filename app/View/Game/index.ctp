@@ -1,8 +1,8 @@
 <?php
 $this->Html->script('/js/core.js', false);
-$this->Html->script('/js/modules/keepalive.js', false);
-$this->Html->script('/js/modules/gamestate.js', false);
-$this->Html->script('/js/modules/zilch.js', false);
+$this->Html->script('/js/controller.js', false);
+$this->Html->script('/js/view.js', false);
+$this->Html->script('/js/zilch.js', false);
 ?>
 <div id="waiting">Waiting for other players</div>
 

@@ -1,5 +1,5 @@
+//namespace général, gere tout ce qui est l'initalisation et la périphérie de jeu
 var Zilchotaf = {
-    bankable: null,
     actions: {  'keepalive': '/game/keepalive',
                 'gamestate': '/game/gamestate',
                 'roll': '/game/roll',
@@ -49,29 +49,45 @@ var Zilchotaf = {
             }
         }
     },
-    __gameState: 0,
-    getGameState: function(){
-        return this.__gameState;
+};
+
+//garde le contact avec le serveur et vérifie que tout le monde en fais autant
+Zilchotaf.KeepAlive = {
+    KEEPALIVE_RYTHM: 8000,
+    //getStatus tourne pendant que le jeu n'est pas en cours
+    getStatus: function(){
+        Zilchotaf.retrieve('keepalive', function(ok, status){
+            if (ok){
+                if (status.status === true){
+                    Zilchotaf.setGameStatus(true);
+                    Zilchotaf.KeepAlive.keepAlive();
+                    Zilchotaf.GameState.getGameState();
+                }
+                else Zilchotaf.KeepAlive.getStatus();
+            }
+            else {
+                //erreur de keepalive, pas grand chose a faire...
+                Zilchotaf.KeepAlive.getStatus();
+            }
+        });
     },
-    setGameState: function(state, myturn){
-        if (state != this.__gameState){
-            this.__gameState = state;
-            
-            if (state != 3){
-            	Zilchotaf.OutputManager.turnChange(state);
-                Zilchotaf.InputManager.propositions.hide();
+    //appelé régulierement pour notifier le serveur que l'on est encore la
+    keepAlive: function(){
+        Zilchotaf.retrieve('keepalive', function(ok, status){
+            if (ok) {
+                //la maj a bien eu lieu, peut etre que le statut a changé
+                if (status.status != Zilchotaf.getGameStatus()){
+                    Zilchotaf.setGameStatus(status.status);
+                }
             }
-            else{
-            	$('#game').hide();
-            	$('#end').show();
-            }
-        }
+            //on relance le bouzin
+            setTimeout(Zilchotaf.KeepAlive.keepAlive, Zilchotaf.KeepAlive.KEEPALIVE_RYTHM);
+        });
     }
 };
 
 $(function(){
     Zilchotaf.KeepAlive.getStatus();
-    //Zilchotaf.GameManager.getGameState();
-    Zilchotaf.InputManager.init();
-    Zilchotaf.OutputManager.init();
+    Zilchotaf.Input.init();
+    Zilchotaf.Output.init();
 });
