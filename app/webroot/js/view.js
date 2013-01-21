@@ -31,6 +31,7 @@ Zilchotaf.Output = {
         this.joueurs.first().find('h2').html(data.players[0].name);
         this.joueurs.last().find('h2').html(data.players[1].name);
         
+        this.dices.removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
         var newdices = data.dices;
         for (var i = 0, l = newdices.length; i < l; i++){
             var valeur = this.cssClasses[newdices[i].value-1];
@@ -42,6 +43,8 @@ Zilchotaf.Output = {
         this.dices.not('.'+Zilchotaf.View.usedClass).each(function(){
             values.push(this.innerHTML);
         });
+        
+        this.possibilites.removeClass(Zilchotaf.View.lockClass);
         var combinations = Zilchotaf.Zilch.getAllCombinations(values);
         for (var i = 0, l = combinations.length; i < l; i++){
             $(this.possibilites[i]).data('lock', combinations[i].lock).find('p:first').html(combinations[i].name).end().find('p:last').html(combinations[i].score);
@@ -123,8 +126,6 @@ Zilchotaf.Input = {
                 Zilchotaf.GameState.getGameState();
             }
             else {
-                $('#des li').removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
-                $('#possibilites li').removeClass(Zilchotaf.View.lockClass);
                 $('#freeroll').hide();
                 Zilchotaf.GameState.getGameState();
             }
