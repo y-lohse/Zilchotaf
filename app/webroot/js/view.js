@@ -50,6 +50,8 @@ Zilchotaf.Output = {
             $(this.possibilites[i]).data('lock', combinations[i].lock).find('p:first').html(combinations[i].name).end().find('p:last').html(combinations[i].score);
         }
         
+        $('#freeroll').hide();
+        
         if (data.bankable > -1) this.possibilites.show().slice(combinations.length).hide();
     },
     turnChange: function(turn){
@@ -121,14 +123,9 @@ Zilchotaf.Input = {
         var dices = Zilchotaf.Input.getLockedDices();
         
         Zilchotaf.tryAction('roll', {dices: dices}, function(ok, response){
-            if (ok && response.error){
-            	//c'etsinterdit de faire un roll, on refresh le gametstae, ca devrait dire pourquoi.
-                Zilchotaf.GameState.getGameState();
-            }
-            else {
-                $('#freeroll').hide();
-                Zilchotaf.GameState.getGameState();
-            }
+            //s'il y a une erreur, il n'y a pas grand chose à faire... donc dans tous les 
+            //cas on recharge la partie
+            Zilchotaf.GameController.requestUpdate();
         });
     },
     bank: function(){
@@ -139,7 +136,7 @@ Zilchotaf.Input = {
                 //pas possible de banker
                 alert('unbankable');
             }
-            else Zilchotaf.GameState.getGameState();
+            else Zilchotaf.GameController.requestUpdate();
         });
     },
     toggleDiceLock: function(){

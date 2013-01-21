@@ -4,6 +4,9 @@ Zilchotaf.GameController = {
     getGameState: function(){
         return this.__gameState;
     },
+    requestUpdate: function(){
+    	Zilchotaf.GameState.getGameState();
+    },
     setGameState: function(state, myturn){
         if (state != this.__gameState){
             this.__gameState = state;
