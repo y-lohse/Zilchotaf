@@ -79,7 +79,7 @@ class DATABASE_CONFIG{
 			'login'=>'root',
 			'password'=>'',
 			'database'=>'zilch',
-			'prefix'=>'',
+			'prefix'=>'zilch_',
 			'encoding'=>'UTF8'
 	);
 
