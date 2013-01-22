@@ -16,7 +16,13 @@ Zilchotaf.GameController = {
     	var player2 = {	score: data.players[1].score || 0, 
     					name: data.players[1].name};
     	
-    	Zilchotaf.Output.update(this.bankable, player1, player2, data.dices, (data.bankable > -1));
+    	var values = [];
+    	for (var i = 0; i < data.dices.length; i++){
+    		if (!data.dices[i].lock) values.push(data.dices[i].value);
+    	}
+    	var combinaisons = Zilchotaf.Zilch.getAllCombinations(values);
+    	
+    	Zilchotaf.Output.update(this.bankable, (data.bankable > -1), player1, player2, data.dices, combinaisons);
     },
     setGameState: function(state, myturn){
         if (state != this.__gameState){
