@@ -199,4 +199,4 @@ define('ZILCH_FIGURE_THREEPAIRS', 10);
 define('ZILCH_FIGURE_NOTHING', 11);
 
 define('ZILCH_MIN_BANK', 300);
-define('ZILCH_WIN', 2000);
+define('ZILCH_WIN', 10000);

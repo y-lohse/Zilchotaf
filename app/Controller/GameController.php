@@ -1,6 +1,6 @@
 <?php
 class GameController extends AppController {
-	public $uses = array('Player', 'Game');
+	public $uses = array('Player', 'Game', 'History');
 	public $components = array('RequestHandler');
 	
 	const MAX_KEEPALIVE = 10;
@@ -211,6 +211,7 @@ class GameController extends AppController {
 		//globalement c'est pas compliqué, on considere les des ouverts, si une combinaison est possible, on laisse jouer
 		if (!$freeroll && !$zilch->resolvable()){
 			//le tour est terminé
+			$this->History->push($gameId, $player['id'], 0);
 			if ((bool)$game['game_lastround']) $this->endGame();
 			else $this->endTurn($game['game_state']);
 			return;
@@ -236,7 +237,6 @@ class GameController extends AppController {
 		$dices = isset($_GET['dices']) ? $_GET['dices'] : array();
 		
 		//il faut que ce soit a nous de jouer et qu'on ai fais au moins un roll
-		var_dump($myturn);
 		if (!$myturn || $game['game_bankable'] === -1){
 			$this->set('error', true);
 			return;
@@ -268,6 +268,8 @@ class GameController extends AppController {
 			$this->Player->id = $player['id'];
 			$this->Player->set('player_score', $bankable+$this->Player->getPlayerScore($player['id']));
 			$this->Player->save();
+			
+			$this->History->push($gameId, $player['id'], $bankable);
 				
 			//fin de partie ou fin de tour tout bete
 			foreach ($players as $currentPlayer){
