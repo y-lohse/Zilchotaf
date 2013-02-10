@@ -97,8 +97,11 @@ class GameController extends AppController {
 		
 		$joueurs = array();
 		foreach ($players as $player){
+			$score = $this->History->getLatestScore($gameId, $player['Player']['player_id']);
+			
 			$joueur = array('name'=>$player['Player']['player_name'],
-					'score'=>$player['Player']['player_score'],);
+							'score'=>$player['Player']['player_score'],
+							'lastScore'=>$score);
 			array_push($joueurs, $joueur);
 		}
 		$data['players'] = $joueurs;

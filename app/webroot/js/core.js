@@ -88,6 +88,8 @@ Zilchotaf.KeepAlive = {
 
 $(function(){
     Zilchotaf.KeepAlive.getStatus();
+    Zilchotaf.GameController.init();
     Zilchotaf.Input.init();
-    Zilchotaf.Output.init();
+    Zilchotaf.GameOutput.init();
+    Zilchotaf.PlayerOutput.init();
 });

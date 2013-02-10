@@ -3,11 +3,38 @@ Zilchotaf.View = {
 	usedClass: 'used'
 };
 
-//gere l'affichage d'informations de jeu au joueur
-Zilchotaf.Output = {
+//gere l'affichage d'informations de jeu
+Zilchotaf.PlayerOutput = {
+	joueurs: null,
+	scores: [],
+	histories: [],
+    init: function(){
+    	this.joueurs = $('#joueurs > div');
+    	this.scores.push($('#score1'));
+    	this.scores.push($('#score2'));
+    	this.histories.push($('#joueurs > div:first ul'));
+    	this.histories.push($('#joueurs > div:last ul'));
+    },
+    update: function(index, info){
+    	this.scores[index].html(info.score);
+        
+        this.joueurs.eq(index).find('h2').html(info.name);
+        
+        this.histories[index].empty();
+        for (var i = 0; i < Math.min(3, info.history.length); i++){
+        	var li = $('<li>').html(info.history[info.history.length-1-i]);
+        	if (info.history[info.history.length-1-i] === 'zilch') li.addClass('score_zilch');
+        	this.histories[index].append(li);
+        }
+    },
+    turnChange: function(turn){
+        this.joueurs.removeClass('atontour');
+        (turn === 1) ? this.joueurs.first().addClass('atontour') : this.joueurs.last().addClass('atontour');
+    },
+};
+
+Zilchotaf.GameOutput = {
     bankable: null,
-    p1score: null,
-    p2score: null,
     dices: null,
     possibilites: null,
     rollButton: null,
@@ -15,21 +42,13 @@ Zilchotaf.Output = {
     cssClasses: 'un deux trois quatre cinq six',
     init: function(){
         this.bankable = $('#bankable');
-        this.p1score = $('#score1');
-        this.p2score = $('#score2');
-        this.joueurs = $('#joueurs > div');
         this.dices = $('#des li');
         this.possibilites = $('#possibilites li');
         this.rollButton = $('#roll');
         this.bankButton = $('#bank');
     },
-    update: function(bankable, bankingAllowed, player1, player2, dices, combinaisons){
-        this.bankable.html(bankable);
-                
-        this.p1score.html(player1.score);
-        this.p2score.html(player2.score);
-        this.joueurs.first().find('h2').html(player1.name);
-        this.joueurs.last().find('h2').html(player2.name);
+    update: function(bankable, bankingAllowed, dices, combinaisons){
+        this.bankable.html(bankable);        
         
         this.dices.removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
         for (var i = 0, l = dices.length; i < l; i++){
@@ -49,9 +68,7 @@ Zilchotaf.Output = {
         
         if (bankingAllowed) this.possibilites.show().slice(combinaisons.length).hide();
     },
-    turnChange: function(turn){
-        this.joueurs.removeClass('atontour');
-        (turn === 1) ? this.joueurs.first().addClass('atontour') : this.joueurs.last().addClass('atontour');
+    turnChange: function(){
         this.dices.removeClass(Zilchotaf.View.usedClass+' '+Zilchotaf.View.lockClass);
         this.disableBank(true);
     },
